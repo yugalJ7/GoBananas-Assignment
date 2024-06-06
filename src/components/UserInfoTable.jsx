@@ -55,8 +55,8 @@ const UserInfoTable = () => {
         search={search}
         setSearch={setSearch}
       />
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
+      <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: "none" }}>
+        <TableContainer sx={{ maxHeight: 530 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -64,7 +64,11 @@ const UserInfoTable = () => {
                   <TableCell
                     key={column.id}
                     align={column.align}
-                    style={{ minWidth: column.minWidth }}
+                    style={{
+                      minWidth: column.minWidth,
+                      backgroundColor: "#F8E3E2",
+                      fontFamily: "Montserrat, sans-serif",
+                    }}
                   >
                     {column.label}
                   </TableCell>
@@ -80,16 +84,53 @@ const UserInfoTable = () => {
                 .map((user) => {
                   const { name, email, location, cell, picture, gender } = user;
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={cell}>
+                    <TableRow
+                      className="innerRow"
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={cell}
+                      sx={{
+                        "&.MuiTableRow-hover:hover": {
+                          background: "#fdf5f5",
+                          cursor: "pointer",
+                        },
+                      }}
+                    >
                       <TableCell align="left">
-                        <img src={picture.medium} alt="" />
+                        <img
+                          className="rounded-full w-10"
+                          src={picture.medium}
+                          alt=""
+                        />
                       </TableCell>
-                      <TableCell align="left">
+                      <TableCell
+                        align="left"
+                        style={{ fontFamily: "Montserrat, sans-serif" }}
+                      >
                         {name.first + " " + name.last}
                       </TableCell>
-                      <TableCell align="left">{gender}</TableCell>
-                      <TableCell align="left">{email}</TableCell>
-                      <TableCell align="left">{location.country}</TableCell>
+                      <TableCell
+                        style={{
+                          textTransform: "Capitalize",
+                          fontFamily: "Montserrat, sans-serif",
+                        }}
+                        align="left"
+                      >
+                        {gender}
+                      </TableCell>
+                      <TableCell
+                        style={{ fontFamily: "Montserrat, sans-serif" }}
+                        align="left"
+                      >
+                        {email}
+                      </TableCell>
+                      <TableCell
+                        style={{ fontFamily: "Montserrat, sans-serif" }}
+                        align="left"
+                      >
+                        {location.country}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -104,6 +145,10 @@ const UserInfoTable = () => {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          style={{
+            backgroundColor: "#F8E3E2",
+            fontFamily: "Montserrat, sans-serif",
+          }}
         />
       </Paper>
     </>

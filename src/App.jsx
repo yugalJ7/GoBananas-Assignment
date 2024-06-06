@@ -1,11 +1,7 @@
-import UserInfoTable from "./components/UserInfoTable";
+import HomePage from "./pages/HomePage";
 
 function App() {
-  return (
-    <>
-      <UserInfoTable />
-    </>
-  );
+  return <HomePage />;
 }
 
 export default App;
