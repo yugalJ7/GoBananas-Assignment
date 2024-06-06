@@ -11,11 +11,11 @@ import axios from "axios";
 import Searchbar from "./Searchbar";
 
 const columns = [
-  { id: "geonameId", label: "Geoname ID", minWidth: 170 },
+  { id: "profilePicture", label: "Profile Pic", minWidth: 170 },
   { id: "name", label: "Name", minWidth: 170 },
-  { id: "Population", label: "Population", minWidth: 170 },
+  { id: "gender", label: "Gender", minWidth: 170 },
+  { id: "email", label: "Email", minWidth: 170 },
   { id: "country", label: "Country", minWidth: 170 },
-  { id: "timezone", label: "Timezone", minWidth: 170 },
 ];
 
 const UserInfoTable = () => {
@@ -28,12 +28,11 @@ const UserInfoTable = () => {
     setPage(newPage);
   };
 
-  // On every render randomuser.me API fetch different users
+  // Using Axios to fetch data from api
+  // Using randomuser.me API for random user data
   const fetchData = async () => {
     await axios
-      .get(
-        "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/geonames-all-cities-with-a-population-1000/records?limit=100&refine=cou_name_en%3A%22India%22&refine=timezone%3A%22Asia%22&refine=feature_code%3A%22PPLA2%22"
-      )
+      .get("https://randomuser.me/api/?results=100")
       .then((response) => setUserData(response.data.results))
       .catch((error) => console.log(error));
   };
@@ -41,8 +40,6 @@ const UserInfoTable = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
-  console.log(userData);
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -55,6 +52,8 @@ const UserInfoTable = () => {
         userData={userData}
         setUserData={setUserData}
         fetchData={fetchData}
+        search={search}
+        setSearch={setSearch}
       />
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer sx={{ maxHeight: 440 }}>
@@ -75,26 +74,22 @@ const UserInfoTable = () => {
             <TableBody>
               {userData
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((city) => {
-                  const {
-                    geoname_id,
-                    name,
-                    population,
-                    cou_name_en,
-                    timezone,
-                  } = city;
+                .filter((data) =>
+                  data.name.first.toLowerCase().includes(search.toLowerCase())
+                )
+                .map((user) => {
+                  const { name, email, location, cell, picture, gender } = user;
                   return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={geoname_id}
-                    >
-                      <TableCell align="left">{geoname_id}</TableCell>
-                      <TableCell align="left">{name}</TableCell>
-                      <TableCell align="left">{population}</TableCell>
-                      <TableCell align="left">{cou_name_en}</TableCell>
-                      <TableCell align="left">{timezone}</TableCell>
+                    <TableRow hover role="checkbox" tabIndex={-1} key={cell}>
+                      <TableCell align="left">
+                        <img src={picture.medium} alt="" />
+                      </TableCell>
+                      <TableCell align="left">
+                        {name.first + " " + name.last}
+                      </TableCell>
+                      <TableCell align="left">{gender}</TableCell>
+                      <TableCell align="left">{email}</TableCell>
+                      <TableCell align="left">{location.country}</TableCell>
                     </TableRow>
                   );
                 })}

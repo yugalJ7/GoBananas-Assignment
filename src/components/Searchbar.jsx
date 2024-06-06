@@ -1,19 +1,9 @@
 import { TextField } from "@mui/material";
-import { useState } from "react";
-// import SearchIcon from "@mui/icons-material/Search";
 
-const Searchbar = ({ userData, setUserData, fetchData }) => {
-  const requestSearch = (value) => {
-    // console.log(value);
-
-    if (value.length === 0) {
-      fetchData();
-    }
-
-    const filteredRows = userData.filter((row) => {
-      return row.name.toLowerCase().includes(value.toLowerCase());
-    });
-    setUserData(filteredRows);
+const Searchbar = ({ setSearch }) => {
+  //Component to search users by their names
+  const handleSearch = (value) => {
+    setSearch(value);
   };
 
   return (
@@ -21,7 +11,7 @@ const Searchbar = ({ userData, setUserData, fetchData }) => {
       id="outlined-basic"
       label="Outlined"
       variant="outlined"
-      onChange={(e) => requestSearch(e.target.value)}
+      onChange={(e) => handleSearch(e.target.value)}
     />
   );
 };
